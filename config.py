@@ -20,5 +20,6 @@ SUBJECTS = [
 BASE_URL = "https://openlibrary.org/search.json"
 
 PAGE_SIZE = 100
+REQUEST_DELAY = 1
 DB_FILE = "harvester.db"
 OUTPUT_FILE = "author_database.xlsx"
