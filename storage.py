@@ -38,10 +38,9 @@ def save_books(records: list[dict]):
 def save_checkpoint(subject: str, page:int ):
     conn = get_connection()
     with conn:
-        conn.execute("""INSERT INTO progress (subject, last_page, completed)
-                     VALUES (?,?,0)
-                     ON CONFLICT(subject) DO NOT UPDATE SET last_page = ?""",
-                     (subject, page, page))
+        conn.execute("""INSERT OR REPLACE INTO progress (subject, last_page, completed)
+                     VALUES (?,?,0)""",
+                     (subject, page))
     conn.close()
 def mark_subject_complete(subject:str):
     conn = get_connection()
@@ -62,6 +61,6 @@ def get_checkpoint(subject: str) -> int:
     return row["last_page"]
 def get_total_records() -> int:
     conn = get_connection()
-    count = conn.execute("SELET COUNT(*) FROM books").fetchone()[0]
+    count = conn.execute("SELECT COUNT(*) FROM books").fetchone()[0]
     conn.close()
     return count
